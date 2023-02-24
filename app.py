@@ -211,6 +211,7 @@ def scrapper( query : str ) -> list :
 
 
 @app.route('/', methods=['GET', 'POST'])
+@cross_origin()
 def search() :
     if request.method == 'POST' :
         query = request.form.get('query').replace(' ', '+')
