@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipcart Reviews</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+    <form action="/" method="post">
+        <label for="query">Search : </label>
+        <input type="text" name="query" id="query">
+        <button type="submit">🔍</button>
+    </form>
+
+    {% if products %}
+    <h2 style="text-align: center; color: blueviolet; " >Total Products : {{ total_products }}</h2>
+    {% for product in products %}
+    <div>
+        {% for product_name, reviews in product.items() %}
+        <h3 style="text-align: center;" >{{ product_name }}</h3>
+        <br>
+
+        <div class="table-users">
+            <div class="header">Reviews</div>
+
+            <table cellspacing="0">
+                <tr>
+                    <!-- <th>Product</th> -->
+                    <th>Rating</th>
+                    <th>Name</th>
+                    <th>Comment Heading</th>
+                    <th width="230">Comments</th>
+                </tr>
+                {% for review in reviews %}
+                <tr>
+                    <!-- <td>{{review['Product']}}</td> -->
+                    <td>{{review['ratings']}}</td>
+                    <td>{{review['name']}}</td>
+                    <td>{{review['in_short']}}</td>
+                    <td>{{review['description']}} </td>
+                    {% endfor %}
+            </table>
+        </div>
+        <br>
+        <br>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+</body>
+
+</html>
