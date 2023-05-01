@@ -32,9 +32,6 @@ else :
 
 
 
-def base_url() : return 'https://www.flipkart.com'
-
-
 # if query is not given :
 #   1.  try to fetch source code as text
 #   2.  after getting source code successfully convert it as Beautifulsoup object and return it
@@ -67,7 +64,7 @@ def get_product_link( page ) :
     else :
         log.info('successfully get products links')
         for link in product_links :
-            yield  base_url() + link['href']
+            yield  getenv("BASE_URL") + link['href']
 
 
 class ReviewThreads( Thread ) :
@@ -153,8 +150,7 @@ def fetch_from_db(query : dict) -> list :
         log.error(e)
     else :
         log.info('successfully get data from the database')
-    
-    return products if products else None
+        return products
 
 
 
@@ -178,7 +174,7 @@ def store_to_db( documents : list[dict] ) -> bool :
 def scrapper( query : str ) -> list :
     '''scrap the data from flipkart using multi-thread'''
     try :
-        page = fetch_web_page( base_url(), query=query ) #this is the main page containing all products
+        page = fetch_web_page( getenv("BASE_URL"), query=query ) #this is the main page containing all products
         product_links = get_product_link(page) # get list of all links available in main page
     except Exception as e :
         log.error(e)
@@ -220,6 +216,7 @@ def search() :
         # try to fetch from database
         # if found then return to the template
         products = fetch_from_db({'slug' : query})
+        log.warning(f"products : {products}")
         if products : return render_template('index.html', products=products)
         
 
